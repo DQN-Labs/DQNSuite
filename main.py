@@ -155,7 +155,7 @@ title_label.pack(pady=(50, 20))
 about_text = tk.Label(about_frame, text="This application allows users to train reinforcement learning agents using popular algorithms and environments.", fg="#FFFFFF", bg="#121212", wraplength=600)
 about_text.pack(pady=10)
 
-dev_info_label = tk.Label(about_frame, text="Developed by DQN Labs, May 27, 2024. Current version: BETA 0.2", fg="#FFFFFF", bg="#121212")
+dev_info_label = tk.Label(about_frame, text="Developed by DQN Labs, May 27, 2024. Current version: 0.1", fg="#FFFFFF", bg="#121212")
 dev_info_label.pack(pady=10)
 
 back_button = ttk.Button(about_frame, text="Back", command=lambda: switch_frame(frames["HomeScreen"]))
