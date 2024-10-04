@@ -38,9 +38,9 @@ pip install customtkinter==5.2.2 swing==4.2.1 stable_baselines3==2.3.2 gym[box2d
 
 The code was tested on Python 3.12, but should probably work on some older versions as well.
 
-## Contributing
+## Contributing and Issue Reporting
 
-Feel free to contribute to the app by submitting a PR in this repo. I will be checking all your PRs as soon as possible. Thank you in advance to everybody that contributes to this.
+Feel free to contribute to the app by submitting a PR in this repo. You may also offer suggestions or report bugs and issues in the "Issues" page. I will be checking all your PRs and issues as soon as possible. Thank you in advance to everybody that contributes to this.
 
 
 
