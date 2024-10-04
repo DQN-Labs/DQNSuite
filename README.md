@@ -12,4 +12,13 @@ PPO
 DQN (discrete spaces only)
 SAC
 
+## Environments supported:
+
+MountainCar (very easy)
+CartPole (easy)
+Pendulum (medium)
+Acrobot (hard)
+LunarLander (very hard)
+
+
 
