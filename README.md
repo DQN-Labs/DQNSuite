@@ -20,5 +20,31 @@ Pendulum (medium)\
 Acrobot (hard)\
 LunarLander (very hard)
 
+## Installation
+
+The entire GUI can run in Python, and requires the following libraries installed to function:
+
+tkinter (pre-installed with Python
+customtkinter\
+swig\
+gym\
+stable-baselines3\
+
+You can install all of these by running this command:
+
+pip install customtkinter==5.2.2 swing==4.2.1 stable_baselines3==2.3.2 gym[box2d]==0.11
+
+## Compatibility
+
+The code was tested on Python 3.12, but should probably work on some older versions as well.
+
+## Contributing
+
+Feel free to contribute to the app by submitting a PR in this repo. I will be checking all your PRs as soon as possible. Thank you in advance to everybody that contributes to this.
+
+
+
+
+
 
 
