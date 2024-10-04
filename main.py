@@ -1,21 +1,21 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
+import customtkinter as ctk
 import gym
-from gym.envs import classic_control
-from gym.envs import box2d
-from gym.envs import toy_text
-from stable_baselines3 import PPO, DQN, A2C
+from stable_baselines3 import PPO, DQN, A2C, TD3, DDPG, SAC
 from stable_baselines3.common.env_util import make_vec_env
 import numpy as np
 
+# Initialize CustomTkinter
+ctk.set_appearance_mode("system")
+ctk.set_default_color_theme("blue")
+
 # Create the main application window
-root = tk.Tk()
+root = ctk.CTk()
 root.title("DQNSuite")
-root.geometry("800x600")
-root.configure(bg="#121212")
+root.geometry("675x574")
 
 # Create a container frame
-container = tk.Frame(root, bg="#121212")
+container = ctk.CTkFrame(root)
 container.pack(fill="both", expand=True)
 
 # Define frames as a dictionary
@@ -25,20 +25,20 @@ def switch_frame(frame):
     frame.tkraise()
 
 # Home Screen
-home_frame = tk.Frame(container, bg="#121212")
+home_frame = ctk.CTkFrame(container)
 frames["HomeScreen"] = home_frame
 home_frame.grid(row=0, column=0, sticky="nsew")
 
-title_label = tk.Label(home_frame, text="DQNSuite", font=("Helvetica", 24), fg="#2196F3", bg="#121212")
+title_label = ctk.CTkLabel(home_frame, text="DQNSuite", font=("Helvetica", 24))
 title_label.pack(pady=(50, 20))
 
-training_button = ttk.Button(home_frame, text="Training Hub", command=lambda: switch_frame(frames["TrainingHub"]))
+training_button = ctk.CTkButton(home_frame, text="Training Hub", command=lambda: switch_frame(frames["TrainingHub"]))
 training_button.pack(pady=10)
 
-about_button = ttk.Button(home_frame, text="About", command=lambda: switch_frame(frames["AboutPage"]))
+about_button = ctk.CTkButton(home_frame, text="About", command=lambda: switch_frame(frames["AboutPage"]))
 about_button.pack(pady=10)
 
-doc_button = ttk.Button(home_frame, text="Documentation", command=lambda: switch_frame(frames["Documentation"]))
+doc_button = ctk.CTkButton(home_frame, text="Documentation", command=lambda: switch_frame(frames["Documentation"]))
 doc_button.pack(pady=10)
 
 def center_widgets(event):
@@ -54,41 +54,42 @@ def center_widgets(event):
 home_frame.bind("<Configure>", center_widgets)
 
 # Training Hub
-training_frame = tk.Frame(container, bg="#121212")
+training_frame = ctk.CTkFrame(container)
 frames["TrainingHub"] = training_frame
 training_frame.grid(row=0, column=0, sticky="nsew")
 
-title_label = tk.Label(training_frame, text="Training Hub", font=("Helvetica", 24), fg="#2196F3", bg="#121212")
+title_label = ctk.CTkLabel(training_frame, text="Training Hub", font=("Helvetica", 24))
 title_label.pack(pady=(50, 20))
 
-env_label = tk.Label(training_frame, text="Select Environment:", fg="#FFFFFF", bg="#121212")
+env_label = ctk.CTkLabel(training_frame, text="Select Environment:")
 env_label.pack(pady=5)
-env_var = ttk.Combobox(training_frame, values=["CartPole-v1", "MountainCar-v0", "LunarLander-v2", "Acrobot-v1", "Pendulum-v0", ], state="readonly")
+env_var = ctk.CTkComboBox(training_frame, values=["CartPole-v1", "MountainCar-v0", "LunarLander-v2", "Acrobot-v1", "Pendulum-v0"], state="readonly")
 env_var.set("CartPole-v1")
 env_var.pack(pady=5)
 
-algo_label = tk.Label(training_frame, text="Select Algorithm:", fg="#FFFFFF", bg="#121212")
+algo_label = ctk.CTkLabel(training_frame, text="Select Algorithm:")
 algo_label.pack(pady=5)
-algo_var = ttk.Combobox(training_frame, values=["PPO", "DQN", "A2C"], state="readonly")
+algo_var = ctk.CTkComboBox(training_frame, values=["PPO", "DQN", "A2C", "TD3", "DDPG", "SAC"], state="readonly")
 algo_var.set("PPO")
 algo_var.pack(pady=5)
 
 # Hyperparameter sliders and labels
 def create_hyperparameter_slider(parent, text, from_, to, resolution, initial_value):
-    frame = tk.Frame(parent, bg="#121212")
+    frame = ctk.CTkFrame(parent)
     frame.pack(pady=5, fill="x")
 
-    label = tk.Label(frame, text=text, fg="#FFFFFF", bg="#121212")
+    label = ctk.CTkLabel(frame, text=text)
     label.pack(side="left", padx=10)
 
-    value_label = tk.Label(frame, text=f"{initial_value:.5f}", fg="#FFFFFF", bg="#121212")
+    value_label = ctk.CTkLabel(frame, text=f"{initial_value:.5f}")
     value_label.pack(side="right", padx=10)
 
-    slider = ttk.Scale(frame, from_=from_, to=to, orient="horizontal", length=400, value=initial_value)
+    slider = ctk.CTkSlider(frame, from_=from_, to=to, number_of_steps=(to-from_)/resolution, width=400)
+    slider.set(initial_value)
     slider.pack(side="left", padx=10, fill="x", expand=True)
 
     def update_value_label(event):
-        value_label.config(text=f"{slider.get():.5f}")
+        value_label.configure(text=f"{slider.get():.5f}")
 
     slider.bind("<Motion>", update_value_label)
 
@@ -118,9 +119,9 @@ def start_training():
         messagebox.showerror("Environment Error", f"Error creating environment: {e}")
         return
 
-    # Check for continuous action space with DQN
-    if algo_name == "DQN" and isinstance(env.action_space, gym.spaces.Box):
-        messagebox.showerror("Algorithm Error", "DQN is not supported by this game.")
+    # Check for algorithm compatibility with action space
+    if algo_name in ["DQN", "TD3", "DDPG", "SAC"] and isinstance(env.action_space, gym.spaces.Box) is False:
+        messagebox.showerror("Algorithm Error", f"{algo_name} is not supported by this environment.")
         env.close()
         return
 
@@ -130,6 +131,12 @@ def start_training():
         model = DQN("MlpPolicy", env, learning_rate=learning_rate, gamma=gamma, buffer_size=buffer_size, exploration_initial_eps=epsilon, batch_size=batch_size, verbose=1)
     elif algo_name == "A2C":
         model = A2C("MlpPolicy", env, learning_rate=learning_rate, gamma=gamma, verbose=1)
+    elif algo_name == "TD3":
+        model = TD3("MlpPolicy", env, learning_rate=learning_rate, gamma=gamma, buffer_size=buffer_size, batch_size=batch_size, verbose=1)
+    elif algo_name == "DDPG":
+        model = DDPG("MlpPolicy", env, learning_rate=learning_rate, gamma=gamma, buffer_size=buffer_size, batch_size=batch_size, verbose=1)
+    elif algo_name == "SAC":
+        model = SAC("MlpPolicy", env, learning_rate=learning_rate, gamma=gamma, buffer_size=buffer_size, batch_size=batch_size, verbose=1)
 
     print("Training started...")
     model.learn(total_timesteps=num_steps)
@@ -138,46 +145,46 @@ def start_training():
     visualize_model(env, model)
     env.close()
 
-start_button = ttk.Button(training_frame, text="Start Training", command=start_training)
+start_button = ctk.CTkButton(training_frame, text="Start Training", command=start_training)
 start_button.pack(pady=10)
 
-back_button = ttk.Button(training_frame, text="Back", command=lambda: switch_frame(frames["HomeScreen"]))
+back_button = ctk.CTkButton(training_frame, text="Back", command=lambda: switch_frame(frames["HomeScreen"]))
 back_button.pack(pady=10)
 
 # About Page
-about_frame = tk.Frame(container, bg="#121212")
+about_frame = ctk.CTkFrame(container)
 frames["AboutPage"] = about_frame
 about_frame.grid(row=0, column=0, sticky="nsew")
 
-title_label = tk.Label(about_frame, text="About", font=("Helvetica", 24), fg="#2196F3", bg="#121212")
+title_label = ctk.CTkLabel(about_frame, text="About", font=("Helvetica", 24))
 title_label.pack(pady=(50, 20))
 
-about_text = tk.Label(about_frame, text="This application allows users to train reinforcement learning agents using popular algorithms and environments.", fg="#FFFFFF", bg="#121212", wraplength=600)
+about_text = ctk.CTkLabel(about_frame, text="This application allows users to train reinforcement learning agents using popular algorithms and environments.", wraplength=600)
 about_text.pack(pady=10)
 
-dev_info_label = tk.Label(about_frame, text="Developed by DQN Labs, May 27, 2024. Current version: BETA 0.2", fg="#FFFFFF", bg="#121212")
+dev_info_label = ctk.CTkLabel(about_frame, text="Developed by DQN Labs, May 27, 2024.")
 dev_info_label.pack(pady=10)
 
-back_button = ttk.Button(about_frame, text="Back", command=lambda: switch_frame(frames["HomeScreen"]))
+back_button = ctk.CTkButton(about_frame, text="Back", command=lambda: switch_frame(frames["HomeScreen"]))
 back_button.pack(pady=10)
 
 # Documentation Page
-doc_frame = tk.Frame(container, bg="#121212")
+doc_frame = ctk.CTkFrame(container)
 frames["Documentation"] = doc_frame
 doc_frame.grid(row=0, column=0, sticky="nsew")
 
-title_label = tk.Label(doc_frame, text="Documentation", font=("Helvetica", 24), fg="#2196F3", bg="#121212")
+title_label = ctk.CTkLabel(doc_frame, text="Documentation", font=("Helvetica", 24))
 title_label.pack(pady=(50, 20))
 
-doc_text = tk.Label(doc_frame, text="Welcome to the DQNSuite! Before you embark on your journey, I highly suggest you go through this documentation page.", fg="#FFFFFF", bg="#121212", wraplength=600)
+doc_text = ctk.CTkLabel(doc_frame, text="Welcome to the DQNSuite! Before you embark on your journey, here's a quick overview on how to use the application.", wraplength=600)
 doc_text.pack(pady=10)
 
-back_button = ttk.Button(doc_frame, text="Back", command=lambda: switch_frame(frames["HomeScreen"]))
+back_button = ctk.CTkButton(doc_frame, text="Back", command=lambda: switch_frame(frames["HomeScreen"]))
 back_button.pack(pady=40)
 
-main_doc_text = tk.Label(doc_frame, text='''The Training Hub is your main way of accessing the suite. You first select an environment
+main_doc_text = ctk.CTkLabel(doc_frame, text='''The Training Hub is your main way of accessing the suite. You first select an environment
 from the ones listed. Once you have found a suitable environment, you then seleect your algorithm
-for reinforcement learning. PPO is usually best for continuous spaces. A2C is a versatile
+for reinforcement learning. PPO, TD3, DDPG, and SAC are usually the best for continuous spaces. A2C is a versatile
 algorithm suitable for almost any environment. DQN is a great algorithm for discrete spaces, in fact
 it does not support continuous environemnts. You can then adjust the hyperparameters as such.
 The learning rate increases the speed at which the AI learns, but can also make it develop bad 
