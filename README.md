@@ -1,4 +1,5 @@
 # DQNSuite
-DQNSuite is a revolutionary tool that brings the power of Reinforcement Learning models into the palm of the user's hand. 
+DQNSuite is a simple, and easy-to-use Python GUI interface tool that brings the power of Reinforcement Learning models into the palm of the user's hand. 
 
-# !!! DQNSuite is currently in BETA. Expect to see bugs and quirks within the app. !!!
+Use the simple GUI interface to create and optimize your own Reinforcement Learning agents in a matter of seconds.
+
