@@ -1,7 +1,7 @@
 # DQNSuite
-DQNSuite is a simple, and easy-to-use Python GUI interface tool that brings the power of Reinforcement Learning models into the palm of the user's hand. \
+DQNSuite is a simple, and easy-to-use Python GUI interface tool that brings the power of Reinforcement Learning models into the palm of the user's hand. 
 
-Use the simple GUI interface to create and optimize your own Reinforcement Learning agents in a matter of seconds.\
+Use the simple GUI interface to create and optimize your own Reinforcement Learning agents in a matter of seconds.
 
 ## Algorithms supported:
 
@@ -10,7 +10,7 @@ SAC (continuous spaces only)\
 DDPG (continuous spaces only)\
 PPO\
 DQN (discrete spaces only)\
-SAC\
+SAC
 
 ## Environments supported:
 
@@ -18,7 +18,7 @@ MountainCar (very easy)\
 CartPole (easy)\
 Pendulum (medium)\
 Acrobot (hard)\
-LunarLander (very hard)\
+LunarLander (very hard)
 
 
 
