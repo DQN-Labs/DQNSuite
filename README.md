@@ -28,7 +28,7 @@ tkinter (pre-installed with Python
 customtkinter\
 swig\
 gym\
-stable-baselines3\
+stable-baselines3
 
 You can install all of these by running this command:
 
