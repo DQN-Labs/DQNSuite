@@ -32,7 +32,7 @@ stable-baselines3
 
 You can install all of these by running this command:
 ```
-pip install customtkinter==5.2.2 swing==4.2.1 stable_baselines3==2.3.2 gym[box2d]==0.11
+pip install customtkinter==5.2.2 swig==4.2.1 stable_baselines3==2.3.2 gym[box2d]==0.11
 ```
 ## Compatibility
 
