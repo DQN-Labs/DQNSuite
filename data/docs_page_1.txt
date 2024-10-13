@@ -1,0 +1,16 @@
+The Training Hub is your main way of accessing the suite. You first select an environment
+from the ones listed. Once you have found a suitable environment, you then select your algorithm
+for reinforcement learning. PPO, TD3, DDPG, and SAC are usually the best for continuous spaces. A2C is a versatile
+algorithm suitable for almost any environment. DQN is a great algorithm for discrete spaces, in fact
+it does not support continuous environments. You can then adjust the hyperparameters as such.
+The learning rate increases the speed at which the AI learns, but can also make it develop bad
+habits which it cannot lose later on. Gamma is the discount factor for the AI's reward system.
+A higher gamma gives lower positive rewards but lower negative rewards and vice versa. Batch size
+and buffer size are always better to have more of, but it can heavily impact the performance
+of your computer. Only use high settings for these if you have a high-end PC. Epsilon
+is the exploration rate of the AI. It is only applicable when used with DQN. The number of timesteps
+signifies how many episodes the AI will train. More timesteps will take longer, but will ofter give
+better results. Once you are done adjusting, you can finally click the Start Training button. Training
+may take a few moments, so please keep patience. Once training is done, a notification will pop up,
+informing you of the end of the session. Once you dismiss the notification, the AI will be tested live
+in front of you for a brief period, so you can see the result of the training.
