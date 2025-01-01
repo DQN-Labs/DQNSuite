@@ -16,7 +16,7 @@ SAC (continuous spaces only)\
 DDPG (continuous spaces only)\
 PPO\
 DQN (discrete spaces only)\
-SAC
+A2C
 
 ## Environments supported:
 
