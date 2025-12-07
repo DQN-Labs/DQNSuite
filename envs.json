@@ -1,0 +1,38 @@
+[
+  {
+    "name": "CartPole (classic)",
+    "id": "CartPole-v1"
+  },
+  {
+    "name": "MountainCar (classic)",
+    "id": "MountainCar-v0"
+  },
+  {
+    "name": "LunarLander (discrete)",
+    "id": "LunarLander-v2"
+  },
+  {
+    "name": "LunarLander (continuous)",
+    "id": "LunarLanderContinuous-v2"
+  },
+  {
+    "name": "Acrobot (classic)",
+    "id": "Acrobot-v1"
+  },
+  {
+    "name": "Pendulum (classic)",
+    "id": "Pendulum-v1"
+  },
+  {
+    "name": "BipedalWalker (continuous)",
+    "id": "BipedalWalker-v3"
+  },
+  {
+    "name": "MountainCarContinuous",
+    "id": "MountainCarContinuous-v0"
+  },
+  {
+    "name": "Panda Reach (panda-gym placeholder)",
+    "id": "PandaReach-v0"
+  }
+]
